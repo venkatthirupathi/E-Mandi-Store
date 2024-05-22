@@ -1,8 +1,9 @@
-import express from "express";
 import dotenv from "dotenv";
-dotenv.config();
-import { userRoutes } from "./routes/user.route";
+import express from "express";
+import { connectDb } from "./db";
 import { adminRouter } from "./routes/admin.route";
+import { userRoutes } from "./routes/user.route";
+dotenv.config();
 
 const app = express();
 app.use(express.json());
@@ -18,6 +19,14 @@ app.get("/app", (req, res) => {
   console.log("login success");
 });
 
-app.listen(port, () => {
-  console.log(`${port} is successfully running`);
-});
+async function main() {
+  // connect to the db
+  await connectDb();
+
+  // then start the server
+  app.listen(port, () => {
+    console.log(`Server started on port ${port}`);
+  });
+}
+
+main();
