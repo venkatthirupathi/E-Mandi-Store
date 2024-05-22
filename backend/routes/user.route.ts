@@ -1,20 +1,15 @@
 import { Router } from "express";
 export const userRoutes = Router();
 
-userRoutes.post("/login", (req, res) => {
-  try {
-  } catch (error) {}
-});
+const signupController = require("../controller/user.signup.controller");
+const loginController = require("../controller/user.login.controller");
+const productController = require("../controller/product.controller");
 
-userRoutes.post("/signup", (req, res) => {
-  try {
-  } catch (error) {}
-});
+userRoutes.post("/login", loginController.checkUser);
 
-userRoutes.get("/home", (req, res) => {
-  try {
-  } catch (error) {}
-});
+userRoutes.post("/signup", signupController.saveUser);
+
+userRoutes.get("/home", productController.getHomeProduct);
 
 userRoutes.post("/home/:id", (req, res) => {
   try {

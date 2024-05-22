@@ -1,10 +1,9 @@
 import { Router } from "express";
 export const adminRouter = Router();
 
-adminRouter.get("/admin", (req, res) => {
-  try {
-  } catch (error) {}
-});
+const productController = require("../controller/product.controller");
+
+adminRouter.get("/admin", productController.getProduct);
 
 adminRouter.post("/admin/addProduct", (req, res) => {
   try {
