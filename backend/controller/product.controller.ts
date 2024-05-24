@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-const productModel = require("../model/ProductModel");
+import { productModel } from "../model/ProductModel"
+// const productModel = require("../model/ProductModel");
 
 interface List<T> {
   data: T[];
@@ -61,25 +62,19 @@ export const productEditSave = async (req: Request, res: Response) => {
 
 export const productSave = async (req: Request, res: Response) => {
   try {
-    const { productId, imageUrl, productName, price, description, quantity } =
-      req.body;
+    const { productId} = req.body;
 
-    // const existingProd = await productModel.findOne({ productId });
-    // if (existingProd) {
-    //   res.status(400).json({ message: "Product already exists" });
-    //   return false;
-    // }
+      // console.log(req.body)
 
-    const product = await productModel.create({
-      productId: productId,
-      imageUrl: imageUrl,
-      productName: productName,
-      price: price,
-      description: description,
-      quantity: quantity,
-    });
+    const existingProd = await productModel.findOne({ productId });
+    if (existingProd) {
+      res.status(400).json({ message: "Product already exists" });
+      return false;
+    }
 
-    res.status(200).json({ message: "Product added successfully" });
+    const product = await productModel.create(req.body);
+
+    res.status(200).json({ message: "Product added successfully"}) //, product });
   } catch (error) {
     // res.status(500).json({ message: "Server failed" });
     if (error instanceof Error) {

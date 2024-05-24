@@ -4,7 +4,7 @@ const productModelSchema = new mongoose.Schema({
   productId: {
     type: String,
     required: true,
-    unique: true,
+    // unique: true,
   },
   imageUrl: {
     type: String,

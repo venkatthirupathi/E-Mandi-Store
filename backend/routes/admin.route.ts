@@ -1,17 +1,20 @@
 import { Router } from "express";
 export const adminRouter = Router();
 
-const productController = require("../controller/product.controller");
+import {getOrders } from "../controller/orders.controller"
+import {getProduct, productSave, productDelete, productEditData, productEditSave} from "../controller/product.controller"
+
+// const productController = require("../controller/product.controller");
 // const orderController = require("../controller/orders.controller");
 
-adminRouter.get("", productController.getProduct);
+adminRouter.get("", getProduct);
 
-adminRouter.post("/addProduct", productController.productSave);
+adminRouter.post("/addProduct", productSave);
 
-adminRouter.get("/delete/:id", productController.productDelete);
+adminRouter.get("/delete/:id", productDelete);
 
-adminRouter.get("/productEdit/:id", productController.productEditData);
+adminRouter.get("/productEdit/:id", productEditData);
 
-adminRouter.post("/productEdit/:id", productController.productEditSave);
+adminRouter.post("/productEdit/:id", productEditSave);
 
-// adminRouter.get("/orders", orderController.getOrders);
+adminRouter.get("/orders", getOrders);

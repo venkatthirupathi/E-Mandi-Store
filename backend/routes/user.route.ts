@@ -1,20 +1,24 @@
 import { Router } from "express";
 export const userRoutes = Router();
 
-const signupController = require("../controller/user.signup.controller");
+import {saveUser} from "../controller/user.signup.controller"
+import {checkUser} from "../controller/user.login.controller"
+import {getHomeProduct} from "../controller/product.controller"
+import {addToCart, deleteCartItem, showCart} from "../controller/cart.controller"
+import {getUserProducts, } from "../controller/orders.controller"
+
+
+// const signupController = require("../controller/user.signup.controller");
 // const loginController = require("../controller/user.login.controller");
-const productController = require("../controller/product.controller");
+// const productController = require("../controller/product.controller");
 
-// userRoutes.post("/login", loginController.checkUser);
+userRoutes.post("/login", checkUser);
 
-userRoutes.post("/signup", signupController.saveUser);
+userRoutes.post("/signup", saveUser);
 
-userRoutes.get("/home", productController.getHomeProduct);
+userRoutes.get("/home", getHomeProduct);
 
-userRoutes.post("/home/:id", (req, res) => {
-  try {
-  } catch (error) {}
-});
+userRoutes.post("/home/:id", );
 
 userRoutes.get("/cart/:id", (req, res) => {
   try {

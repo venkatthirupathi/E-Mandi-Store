@@ -1,0 +1,93 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  .signup-title {
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+
+  .signup-container {
+    width: 400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .signup-box {
+    margin: auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 350px;
+  }
+  
+  .signup-box form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .signup-box label {
+    margin-bottom: 5px;
+    text-align: left;
+  }
+  
+  .signup-box input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .signup-button {
+    background-color: orange;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .signup-button:hover {
+    background-color: darkorange;
+  }
+
+  .signup-box select {
+    padding-right: 30px; /* Add padding to the right to prevent text from overlapping with the dropdown arrow */
+    margin-bottom: 10px;  
+  }
+  
+  .radio-group {
+    /* margin-top: 6px; */
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px; /* Add margin-bottom to separate from the elements below */
+  }
+  
+  .radio-options {
+    display: flex;
+    margin-left: 20px;
+    align-items: center;  /* Add this line */
+  }
+  
+  
+  .radio-options input[type="radio"] {
+    margin-right: 12px; /* Add some margin to the right of the radio buttons */
+  }
+
+  #active-yes, #active-no {
+    margin-top: 13px;  /* Adjust as needed */
+    margin-left: 15px;  /* Adjust as needed */
+  }
+  
+  
