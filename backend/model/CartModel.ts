@@ -1,6 +1,14 @@
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 
-const cartModelSchema = new mongoose.Schema({
+export interface Cart {
+  cartItemID: string;
+  userId: ObjectId;
+  productName: string;
+  quantity: number;
+  price: number;
+}
+
+const cartModelSchema = new mongoose.Schema<Cart>({
   cartItemID: {
     type: String,
     required: true,
@@ -25,4 +33,4 @@ const cartModelSchema = new mongoose.Schema({
     required: true,
   },
 });
-export const cartModel = mongoose.model("Cart", cartModelSchema);
+export const cartModel = mongoose.model<Cart>("Cart", cartModelSchema);

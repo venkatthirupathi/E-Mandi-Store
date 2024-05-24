@@ -1,23 +1,23 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { userModel } = require("../model/userModel");
-import { Response, Request } from "express";
+import bcrypt from "bcrypt";
+import { Request, Response } from "express";
+import { loginModel } from "../model/LoginModel";
+import { User } from "../model/UserModel";
 
-const loginmodel = require("../model/LoginModel.ts");
 export const checkUser = async (
-  req: Request,
+  req: Request<unknown, unknown, Pick<User, "email" | "password">>,
   res: Response,
 ): Promise<boolean> => {
   const { email, password } = req.body;
 
   try {
-    const user = await loginmodel.findOne({ email });
+    const user = await loginModel.findOne({ email });
     if (!user) {
       res.status(401).json({ message: "enter valid email id" });
       return false;
     }
-    const ispassword = await bcrypt.compare(password, user.password);
-    if (!ispassword) {
+
+    const isPassword = bcrypt.compareSync(password, user.password);
+    if (!isPassword) {
       res.status(404).json({ message: "enter valid password" });
       return false;
     }

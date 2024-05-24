@@ -1,6 +1,15 @@
 import mongoose from "mongoose";
 
-const userModelSchema = new mongoose.Schema({
+export interface User {
+  email: string;
+  password: string;
+  username: string;
+  mobileNumber: string;
+  active: boolean;
+  role: string;
+}
+
+const userModelSchema = new mongoose.Schema<User>({
   email: {
     type: String,
     required: true,
@@ -37,4 +46,4 @@ const userModelSchema = new mongoose.Schema({
   //   ref: "Order",
   // },
 });
-export const userModel = mongoose.model("User", userModelSchema);
+export const userModel = mongoose.model<User>("User", userModelSchema);
