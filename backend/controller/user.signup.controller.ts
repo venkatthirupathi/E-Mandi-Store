@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 const userModel = require("../model/UserModel");
+import {userRoutes} from "../routes/user.route"
 
 export const saveUser = async (req: Request, res: Response) => {
   try {
@@ -10,41 +11,32 @@ export const saveUser = async (req: Request, res: Response) => {
       username,
       mobileNumber,
       active,
-      role,
-      // cart,
-      // orderList,
-    } = req.body;
+      role } = req.body;
+      
+      console.log(req.body);
 
-    // const existingUser = await userModel.findOne({ email });
-    // if (existingUser) {
-    //   res.status(400).json({ message: "User already exists" });
-    //   return;
-    // }
-
+   
     const newUser = await userModel.create({
       email: email,
       password: password,
       username: username,
       mobileNumber: mobileNumber,
       active: active,
-      role: role,
-      // cart: cart,
-      // orderList: orderList,
+      role: role      
     });
+    console.log("saved successfully")
 
-    // const token = jwt.sign(
-    //   {
-    //     id: newUser._id,
-    //     password: newUser.password,
-    //   },
-    //   process.env.JWT_SECRET as string,
-    //   {
-    //     expiresIn: "1h",
-    //   },
-    // );
-
-    res.status(201).send(true);
-  } catch (err) {
-    res.status(500).send(false);
+  } catch (error) {
+  
+    if (error) {
+      // console.error("Error saving product:", error); // Log the actual error for debugging
+      res.status(500).json({ message: "Server failed", error: error });
+    } else {
+      // console.error("Unexpected error:", error);
+      res
+        .status(500)
+        .json({ message: "Server failed", error: "Unexpected error occurred" });
+    }
   }
-};
+}
+

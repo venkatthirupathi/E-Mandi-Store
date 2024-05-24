@@ -1,10 +1,14 @@
-import { Router } from "express";
-export const adminRouter = Router();
+const express=require('express')
+export const  adminRouter=express.Router();
+import {Request,Response} from "express";
 
 const productController = require("../controller/product.controller");
 // const orderController = require("../controller/orders.controller");
 
 adminRouter.get("", productController.getProduct);
+adminRouter.get("/add", (req:Request, res:Response) => {
+  res.send({ message: "true" });
+});
 
 adminRouter.post("/addProduct", productController.productSave);
 

@@ -1,42 +1,34 @@
-import { Router } from "express";
-export const userRoutes = Router();
-
+const express=require('express')
+export const userRoutes=express.Router();
+import { Request,Response } from "express";
 const signupController = require("../controller/user.signup.controller");
-// const loginController = require("../controller/user.login.controller");
+const cartController = require("../controller/cart.controller");
 const productController = require("../controller/product.controller");
 
 // userRoutes.post("/login", loginController.checkUser);
 
-userRoutes.post("/signup", signupController.saveUser);
+
+userRoutes.post("/signup", signupController.saveUser());
 
 userRoutes.get("/home", productController.getHomeProduct);
 
-userRoutes.post("/home/:id", (req, res) => {
+userRoutes.post("/home/:id", cartController.addToCart);
+
+userRoutes.get("/cart/:id", cartController.showCart);
+
+userRoutes.post("/cart/delete", cartController.deleteCartItem);
+
+userRoutes.post("/saveOrder", (req:Request, res:Response) => {
   try {
   } catch (error) {}
 });
 
-userRoutes.get("/cart/:id", (req, res) => {
+userRoutes.post("/orders", (req:Request, res:Response) => {
   try {
   } catch (error) {}
 });
 
-userRoutes.post("/cart/delete", (req, res) => {
-  try {
-  } catch (error) {}
-});
-
-userRoutes.post("/saveOrder", (req, res) => {
-  try {
-  } catch (error) {}
-});
-
-userRoutes.post("/orders", (req, res) => {
-  try {
-  } catch (error) {}
-});
-
-userRoutes.post("/placeOrder", (req, res) => {
+userRoutes.post("/placeOrder", (req:Request, res:Response) => {
   try {
   } catch (error) {}
 });
