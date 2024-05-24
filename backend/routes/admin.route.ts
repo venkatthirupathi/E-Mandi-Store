@@ -1,4 +1,7 @@
+import { Request, Response } from "express";
 import { Router } from "express";
+import productController from "../controller/product.controller";
+
 export const adminRouter = Router();
 
 import {getOrders } from "../controller/orders.controller"

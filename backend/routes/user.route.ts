@@ -1,4 +1,8 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
+import cartController from "../controller/cart.controller";
+import productController from "../controller/product.controller";
+import userSignupController from "../controller/user.signup.controller";
+
 export const userRoutes = Router();
 
 import {saveUser} from "../controller/user.signup.controller"
@@ -20,27 +24,21 @@ userRoutes.get("/home", getHomeProduct);
 
 userRoutes.post("/home/:id", );
 
-userRoutes.get("/cart/:id", (req, res) => {
+userRoutes.get("/cart/:id", cartController.showCart);
+
+userRoutes.post("/cart/delete", cartController.deleteCartItem);
+
+userRoutes.post("/saveOrder", (req: Request, res: Response) => {
   try {
   } catch (error) {}
 });
 
-userRoutes.post("/cart/delete", (req, res) => {
+userRoutes.post("/orders", (req: Request, res: Response) => {
   try {
   } catch (error) {}
 });
 
-userRoutes.post("/saveOrder", (req, res) => {
-  try {
-  } catch (error) {}
-});
-
-userRoutes.post("/orders", (req, res) => {
-  try {
-  } catch (error) {}
-});
-
-userRoutes.post("/placeOrder", (req, res) => {
+userRoutes.post("/placeOrder", (req: Request, res: Response) => {
   try {
   } catch (error) {}
 });
