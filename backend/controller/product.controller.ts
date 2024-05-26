@@ -17,16 +17,16 @@ export const getProduct = async (req: Request, res: Response) => {
   }
 };
 
-  getHomeProduct: async (req: Request, res: Response) => {
+export const getHomeProduct =  async (req: Request, res: Response) => {
     try {
       const products = await productModel.find().limit(10);
       res.status(200).send(products);
     } catch {
       res.status(500).json({ message: "Server failed" });
     }
-  },
+  }
 
-  productEditData: async (req: Request, res: Response) => {
+  export const productEditData = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
       const product = await productModel.findById(id);
@@ -38,10 +38,10 @@ export const getProduct = async (req: Request, res: Response) => {
     } catch (error) {
       res.status(500).json({ message: "Server falied" });
     }
-  },
+  }
 
-  productEditSave: async (
-    req: Request<{ id: string }, unknown, Product>,
+  export const productEditSavec= async (
+    req: Request,
     res: Response,
   ) => {
     try {
@@ -57,7 +57,7 @@ export const getProduct = async (req: Request, res: Response) => {
     } catch (error) {
       res.status(500).json({ message: "Server failed" });
     }
-  },
+  }
 
 export const productSave = async (req: Request, res: Response) => {
   try {
@@ -85,9 +85,10 @@ export const productSave = async (req: Request, res: Response) => {
         .status(500)
         .json({ message: "Server failed", error: "Unexpected error occurred" });
     }
-  },
+  }
+}
 
-  productDelete: async (req: Request, res: Response) => {
+  export const productDelete =  async (req: Request, res: Response) => {
     try {
       const product = await productModel.findById(req.params.id);
       if (!product) {
@@ -97,5 +98,4 @@ export const productSave = async (req: Request, res: Response) => {
     } catch (error) {
       res.status(500).json({ message: "Server failed" });
     }
-  },
-};
+  }

@@ -1,24 +1,24 @@
-/* ResponsiveAppBar.css */
-
 .app-bar {
-  background-color: #4caf50; /* Change to your desired color */
+  background-color: #2c8b2fcd !important;
+  /* text-emphasis-color: black; */
 }
 
 .logo-text {
   font-family: "monospace";
   font-weight: 700;
   letter-spacing: 0.3rem;
-  color: inherit;
+  color:black;
   text-decoration: none;
 }
 
 .tagline {
-  margin-right: 2rem;
+  margin-right: auto;
   display: flex;
   font-family: "Courier New", monospace;
   font-weight: 700;
   letter-spacing: 0.1rem;
-  color: white;
+  color: rgb(0, 0, 0);
+  font-size: 1.2rem;
 }
 
 .shop-now-button {
