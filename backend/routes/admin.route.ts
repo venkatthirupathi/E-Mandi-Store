@@ -1,14 +1,14 @@
-import { Request, Response } from "express";
 import { Router } from "express";
-import productController from "../controller/product.controller";
+import { getOrders } from "../controller/orders.controller";
+import {
+  getProduct,
+  productDelete,
+  productEditData,
+  productEditSave,
+  productSave,
+} from "../controller/product.controller";
 
 export const adminRouter = Router();
-
-import {getOrders } from "../controller/orders.controller"
-import {getProduct, productSave, productDelete, productEditData, productEditSave} from "../controller/product.controller"
-
-// const productController = require("../controller/product.controller");
-// const orderController = require("../controller/orders.controller");
 
 adminRouter.get("", getProduct);
 

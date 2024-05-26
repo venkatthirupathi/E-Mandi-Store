@@ -11,6 +11,9 @@ app.use(express.urlencoded({ extended: true }));
 
 const port = process.env.PORT;
 
+app.get("/health", (req, res) => {
+  res.json({ message: "healthy" });
+});
 app.use("/api/user", userRoutes);
 app.use("/api/admin", adminRouter);
 

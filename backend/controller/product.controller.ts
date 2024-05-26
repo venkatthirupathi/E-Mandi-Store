@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { productModel } from "../model/ProductModel"
+import { Product, productModel } from "../model/ProductModel";
 // const productModel = require("../model/ProductModel");
 
 interface List<T> {
@@ -17,53 +17,56 @@ export const getProduct = async (req: Request, res: Response) => {
   }
 };
 
-export const getHomeProduct =  async (req: Request, res: Response) => {
-    try {
-      const products = await productModel.find().limit(10);
-      res.status(200).send(products);
-    } catch {
-      res.status(500).json({ message: "Server failed" });
-    }
-  }
-
-  export const productEditData = async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
-      const product = await productModel.findById(id);
-      if (!product) {
-        res.status(404).json({ message: "Product not found" });
-      }
-      // return product;
-      res.status(500).send(product);
-    } catch (error) {
-      res.status(500).json({ message: "Server falied" });
-    }
-  }
-
-  export const productEditSavec= async (
-    req: Request,
-    res: Response,
-  ) => {
-    try {
-      const product = await productModel.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        { new: true },
-      );
-      if (!product) {
-        return res.status(404).json({ message: "Product not found" });
-      }
-      res.status(200).json(product);
-    } catch (error) {
-      res.status(500).json({ message: "Server failed" });
-    }
-  }
-
-export const productSave = async (req: Request, res: Response) => {
+export const getHomeProduct = async (req: Request, res: Response) => {
   try {
-    const { productId} = req.body;
+    const products = await productModel.find().limit(10);
+    res.status(200).send(products);
+  } catch {
+    res.status(500).json({ message: "Server failed" });
+  }
+};
 
-      // console.log(req.body)
+export const productEditData = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const product = await productModel.findById(id);
+    if (!product) {
+      res.status(404).json({ message: "Product not found" });
+    }
+    // return product;
+    res.status(500).send(product);
+  } catch (error) {
+    res.status(500).json({ message: "Server falied" });
+  }
+};
+
+export const productEditSave = async (
+  req: Request<{ id: string }, unknown, Product>,
+  res: Response,
+) => {
+  try {
+    const product = await productModel.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true },
+    );
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ message: "Server failed" });
+  }
+};
+
+export const productSave = async (
+  req: Request<unknown, unknown, { productId: string }>,
+  res: Response,
+) => {
+  try {
+    const { productId } = req.body;
+
+    // console.log(req.body)
 
     const existingProd = await productModel.findOne({ productId });
     if (existingProd) {
@@ -73,7 +76,7 @@ export const productSave = async (req: Request, res: Response) => {
 
     const product = await productModel.create(req.body);
 
-    res.status(200).json({ message: "Product added successfully"}) //, product });
+    res.status(200).json({ message: "Product added successfully" }); //, product });
   } catch (error) {
     // res.status(500).json({ message: "Server failed" });
     if (error instanceof Error) {
@@ -86,16 +89,16 @@ export const productSave = async (req: Request, res: Response) => {
         .json({ message: "Server failed", error: "Unexpected error occurred" });
     }
   }
-}
+};
 
-  export const productDelete =  async (req: Request, res: Response) => {
-    try {
-      const product = await productModel.findById(req.params.id);
-      if (!product) {
-        return res.status(404).json({ message: "Product not found" });
-      }
-      await productModel.deleteOne({ _id: req.params.id });
-    } catch (error) {
-      res.status(500).json({ message: "Server failed" });
+export const productDelete = async (req: Request, res: Response) => {
+  try {
+    const product = await productModel.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
     }
+    await productModel.deleteOne({ _id: req.params.id });
+  } catch (error) {
+    res.status(500).json({ message: "Server failed" });
   }
+};
