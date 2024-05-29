@@ -1,32 +1,32 @@
 import dotenv from "dotenv";
-import express from "express";
+import express, { Router } from "express";
+import { authRouter } from "./controller/auth";
+import { productRouter } from "./controller/product";
 import { connectDb } from "./db";
-import { adminRouter } from "./routes/admin.route";
-import { userRoutes } from "./routes/user.route";
+import { errorHandler } from "./middleware/error";
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const port = process.env.PORT;
+export const apiRouter = Router();
+app.use("/api", apiRouter);
+apiRouter.use("/auth", authRouter);
+apiRouter.use("/product", productRouter);
 
-app.get("/health", (req, res) => {
+apiRouter.get("/health", (req, res) => {
   res.json({ message: "healthy" });
 });
-app.use("/api/user", userRoutes);
-app.use("/api/admin", adminRouter);
 
-// app.get("/app", (req, res) => {
-//   res.send("welcome to e-mandi store");
-//   console.log("login success");
-// });
+app.use(errorHandler);
 
 async function main() {
   // connect to the db
   await connectDb();
 
   // then start the server
+  const port = process.env.PORT || 3000;
   app.listen(port, () => {
     console.log(`Server started on port ${port}`);
   });

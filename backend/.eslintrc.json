@@ -3,16 +3,13 @@
     "node": true
   },
   "ignorePatterns": ["node_modules/", "dist/"],
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended-type-checked"
-  ],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": { "project": true, "tsconfigRootDir": "." },
   "plugins": ["@typescript-eslint"],
   "rules": {
     "@typescript-eslint/no-explicit-any": "warn",
-    "@typescript-eslint/no-misused-promises": "warn",
+    "@typescript-eslint/no-misused-promises": "off",
     "no-empty": "warn",
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "warn"
