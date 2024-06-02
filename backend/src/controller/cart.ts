@@ -1,4 +1,4 @@
-import { Response, Router } from "express";
+import { Request, Response, Router } from "express";
 import { ApiError } from "../error";
 import { authenticate } from "../middleware/auth";
 import { CartItem, cartItemModel } from "../model/CartItem";
@@ -60,7 +60,7 @@ export interface CartGetAllResponse {
 cartRouter.get(
   "/",
   authenticate(UserRole.user),
-  async (req, res: Response<CartGetAllResponse>) => {
+  async (req: Request, res: Response<CartGetAllResponse>) => {
     const { user } = res.locals;
     const foundUser = (await userModel.findById(user._id))!;
     // ALERT: type check populate path
