@@ -3,11 +3,12 @@ import { ApiError } from "../error";
 import { authenticate } from "../middleware/auth";
 import { productModel, validators } from "../model/ProductModel";
 import { UserRole, userModel } from "../model/UserModel";
+import { HttpStatusCode } from "../utils";
 
 export const productRouter = Router();
 
 /* Create a product */
-productRouter.post("/", authenticate(UserRole.user), async (req, res) => {
+productRouter.post("/", authenticate(UserRole.seller), async (req, res) => {
   const product = validators.createProduct.validateSync(req.body);
   const createdProduct = await productModel.create({
     ...product,
@@ -18,65 +19,61 @@ productRouter.post("/", authenticate(UserRole.user), async (req, res) => {
       productsCreated: createdProduct._id,
     },
   });
-  return res.json({ product: createdProduct });
+  return res.status(HttpStatusCode.Created).json({ product: createdProduct });
 });
 
 /* Read all products */
-productRouter.get("/", authenticate(UserRole.user), async (req, res) => {
+productRouter.get("/", async (req, res) => {
   const products = await productModel.find();
-  res.json({ products });
+  res.status(HttpStatusCode.Ok).json({ products });
 });
 
 /* Read a product */
-productRouter.get(
-  "/:productId",
-  authenticate(UserRole.user),
-  async (req, res) => {
-    const { productId } = req.params;
-    const product = await productModel.findById(productId);
-    if (!product) {
-      throw new ApiError(404, "Product not found");
-    }
-    res.json({ product: product.toObject() });
+productRouter.get("/:productId", async (req, res) => {
+  const { productId } = req.params;
+  const product = await productModel.findById(productId);
+  if (!product) {
+    throw new ApiError(HttpStatusCode.NotFound, "Product not found");
   }
-);
+  res.status(HttpStatusCode.Ok).json({ product: product.toObject() });
+});
 
 /* Update a product */
 productRouter.patch(
   "/:productId",
-  authenticate(UserRole.user),
+  authenticate(UserRole.seller),
   async (req, res) => {
     const { productId } = req.params;
     const { user } = res.locals;
     const patch = validators.patchProduct.validateSync(req.body);
     const product = await productModel.findById(productId);
     if (!product) {
-      throw new ApiError(404, "Product not found");
+      throw new ApiError(HttpStatusCode.NotFound, "Product not found");
     }
     if (!product.ownerId.equals(user._id)) {
-      throw new ApiError(401, "Unauthorized");
+      throw new ApiError(HttpStatusCode.Unauthorized, "Unauthorized");
     }
     product.set(patch);
     await product.save();
-    return res.json({ product: product.toObject() });
+    return res.status(HttpStatusCode.Ok).json({ product: product.toObject() });
   }
 );
 
 /* Delete a product */
 productRouter.delete(
   "/:productId",
-  authenticate(UserRole.user),
+  authenticate(UserRole.seller),
   async (req, res) => {
     const { productId } = req.params;
     const { user } = res.locals;
     const product = await productModel.findById(productId);
     if (!product) {
-      throw new ApiError(404, "Product not found");
+      throw new ApiError(HttpStatusCode.NotFound, "Product not found");
     }
     if (!product.ownerId.equals(user._id)) {
-      throw new ApiError(401, "Unauthorized");
+      throw new ApiError(HttpStatusCode.Unauthorized, "Unauthorized");
     }
     await product.deleteOne();
-    return res.json({ message: "Product deleted" });
+    return res.status(HttpStatusCode.Ok).json({ message: "Product deleted" });
   }
 );

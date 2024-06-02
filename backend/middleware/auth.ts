@@ -5,7 +5,7 @@ import { User, UserRole, userModel } from "../model/UserModel";
 
 interface AuthenticatedResponse extends Response<unknown, { user: User }> {}
 
-export const authenticate = function (userRole: UserRole) {
+export const authenticate = function (...roles: UserRole[]) {
   return function (
     req: Request,
     res: AuthenticatedResponse,
@@ -28,7 +28,7 @@ export const authenticate = function (userRole: UserRole) {
       }
       const userId = (payload as jwt.JwtPayload & { userId: string }).userId;
       const foundUser = await userModel.findById(userId);
-      if (!foundUser || foundUser.role !== userRole) {
+      if (!foundUser || !roles.includes(foundUser.role as UserRole)) {
         return res.status(401).json({ error: "Unauthorized" });
       }
       res.locals.user = foundUser;

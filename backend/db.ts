@@ -1,7 +1,4 @@
 import { connect } from "mongoose";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 export async function connectDb() {
   try {
@@ -9,10 +6,12 @@ export async function connectDb() {
     if (!url) {
       throw new Error("env MONGODB_URL not set");
     }
-    await connect(url);
+    const db = await connect(url);
     console.log("Connected to DB");
+    return db;
   } catch (e) {
     console.error("DB connection failed");
     console.error(e);
   }
+  return null;
 }

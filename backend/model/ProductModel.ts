@@ -23,6 +23,7 @@ const productModelSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  // User: productsCreated[], Product: ownerId
   ownerId: {
     type: SchemaTypes.ObjectId,
     ref: "User",

@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { CreateProductSchema } from "./model/ProductModel";
 import { CreateUserSchema, UserRole } from "./model/UserModel";
 
-function randomUser(): CreateUserSchema {
+export function randomUser(): CreateUserSchema {
   return {
     active: true,
     email: faker.internet.email(),
@@ -13,7 +13,7 @@ function randomUser(): CreateUserSchema {
   };
 }
 
-function randomProduct(): CreateProductSchema {
+export function randomProduct(): CreateProductSchema {
   return {
     description: faker.commerce.productDescription(),
     imageUrl: faker.image.url(),
@@ -22,7 +22,3 @@ function randomProduct(): CreateProductSchema {
     quantity: faker.number.int({ min: 1, max: 100 }),
   };
 }
-
-const fake = randomProduct();
-
-console.log(JSON.stringify(fake, null, 2));

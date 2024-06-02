@@ -3,6 +3,7 @@ import { Response, Router } from "express";
 import jwt from "jsonwebtoken";
 import { ApiError } from "../error";
 import { userModel, validators } from "../model/UserModel";
+import { HttpStatusCode } from "../utils";
 
 export const authRouter = Router();
 
@@ -15,7 +16,9 @@ authRouter.post("/signup", async (req, res: Response) => {
     ...userWithoutPassword,
     password: hashedPassword,
   });
-  res.json({ message: "Registration successful" });
+  res
+    .status(HttpStatusCode.Created)
+    .json({ message: "Registration successful" });
 });
 
 authRouter.post("/login", async (req, res) => {
@@ -34,5 +37,5 @@ authRouter.post("/login", async (req, res) => {
     expiresIn: "7d",
   });
 
-  res.json({ token, user: user.toObject() });
+  res.status(HttpStatusCode.Ok).json({ token, user: user.toObject() });
 });

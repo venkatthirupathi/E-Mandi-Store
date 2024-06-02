@@ -32,25 +32,29 @@ const userModelSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  //
-  cartId: {
-    type: SchemaTypes.ObjectId,
-    ref: "Cart",
-    required: false,
+  cart: {
+    type: [
+      {
+        id: { type: SchemaTypes.ObjectId, ref: "Product", required: true },
+        count: { type: Number, required: true },
+      },
+    ],
+    default: [],
+    required: true,
   },
   //
   orderIds: {
     type: [SchemaTypes.ObjectId],
     ref: "Order",
     default: [],
-    required: false,
+    required: true,
   },
-  //
+  // User: productsCreated[], Product: ownerId
   productsCreated: {
     type: [SchemaTypes.ObjectId],
     ref: "Product",
     default: [],
-    required: false,
+    required: true,
   },
 });
 
@@ -73,7 +77,7 @@ export type User = WithId<UserModelSchema>;
 
 export enum UserRole {
   user = "user",
-  admin = "admin",
+  seller = "seller",
 }
 
 export type UserWithoutPassword = OmitStrict<User, "password">;
@@ -81,7 +85,7 @@ export type UserWithoutPassword = OmitStrict<User, "password">;
 /* ------------------------------- validation ------------------------------- */
 
 const createUserValidator: ObjectSchema<
-  OmitStrict<UserModelSchema, "cartId" | "orderIds" | "productsCreated">
+  OmitStrict<UserModelSchema, "orderIds" | "productsCreated" | "cart">
 > = object({
   email: string().email().required(),
   password: string().required(),
