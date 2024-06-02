@@ -1,26 +1,36 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import { ApiError } from "../error";
 import { authenticate } from "../middleware/auth";
-import { productModel, validators } from "../model/ProductModel";
+import { Product, productModel, validators } from "../model/ProductModel";
 import { UserRole, userModel } from "../model/UserModel";
-import { HttpStatusCode } from "../utils";
+import { HttpStatusCode, Overwrite } from "../utils";
 
 export const productRouter = Router();
 
+export interface ProductResponse {
+  product: Overwrite<Product, { _id: string; ownerId: string }>;
+}
+
 /* Create a product */
-productRouter.post("/", authenticate(UserRole.seller), async (req, res) => {
-  const product = validators.createProduct.validateSync(req.body);
-  const createdProduct = await productModel.create({
-    ...product,
-    ownerId: res.locals.user._id,
-  });
-  await userModel.findByIdAndUpdate(res.locals.user._id, {
-    $push: {
-      productsCreated: createdProduct._id,
-    },
-  });
-  return res.status(HttpStatusCode.Created).json({ product: createdProduct });
-});
+productRouter.post(
+  "/",
+  authenticate(UserRole.seller),
+  async (req: Request, res: Response<ProductResponse>) => {
+    const product = validators.createProduct.validateSync(req.body);
+    const createdProduct = await productModel.create({
+      ...product,
+      ownerId: res.locals.user._id,
+    });
+    await userModel.findByIdAndUpdate(res.locals.user._id, {
+      $push: {
+        productsCreated: createdProduct._id,
+      },
+    });
+    return res
+      .status(HttpStatusCode.Created)
+      .json({ product: createdProduct.toObject() });
+  }
+);
 
 /* Read all products */
 productRouter.get("/", async (req, res) => {

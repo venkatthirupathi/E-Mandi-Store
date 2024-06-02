@@ -2,8 +2,8 @@ import bcrypt from "bcrypt";
 import { Response, Router } from "express";
 import jwt from "jsonwebtoken";
 import { ApiError } from "../error";
-import { userModel, validators } from "../model/UserModel";
-import { HttpStatusCode } from "../utils";
+import { User, userModel, validators } from "../model/UserModel";
+import { HttpStatusCode, Overwrite } from "../utils";
 
 export const authRouter = Router();
 
@@ -21,7 +21,12 @@ authRouter.post("/signup", async (req, res: Response) => {
     .json({ message: "Registration successful" });
 });
 
-authRouter.post("/login", async (req, res) => {
+export interface LoginResponse {
+  token: string;
+  user: Overwrite<User, { _id: string }>;
+}
+
+authRouter.post("/login", async (req, res: Response<LoginResponse>) => {
   const credentials = validators.loginUser.validateSync(req.body);
   const user = await userModel.findOne({ email: credentials.email });
   if (!user || !bcrypt.compareSync(credentials.password, user.password)) {

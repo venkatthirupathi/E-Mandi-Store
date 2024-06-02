@@ -2,13 +2,13 @@ import { faker } from "@faker-js/faker";
 import { CreateProductSchema } from "./model/ProductModel";
 import { CreateUserSchema, UserRole } from "./model/UserModel";
 
-export function randomUser(): CreateUserSchema {
+export function randomUser(role: UserRole): CreateUserSchema {
   return {
     active: true,
     email: faker.internet.email(),
     mobileNumber: faker.phone.number(),
     password: faker.internet.password(),
-    role: UserRole.user,
+    role,
     username: faker.internet.userName(),
   };
 }

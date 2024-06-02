@@ -9,18 +9,40 @@ export async function sleep(ms: number) {
 export class Logger {
   constructor(private tag: string) {}
 
+  /** Use for debug logging only */
   static log(tag: string, ...messages: any[]) {
     console.log(Logger.format(tag, messages));
   }
 
+  /** Use for debug logging only */
   log(...messages: any[]) {
     Logger.log(this.tag, ...messages);
   }
 
-  static format(tag: string, messages: any[]) {
+  static info(tag: string, ...messages: any[]) {
+    console.info(Logger.format(tag, messages));
+  }
+
+  info(...messages: any[]) {
+    Logger.info(this.tag, ...messages);
+  }
+
+  private static isObject(obj: any) {
+    return typeof obj === "object" && obj !== null;
+  }
+
+  private static isUndefinedOrNull(obj: any) {
+    return obj === undefined || obj === null;
+  }
+
+  private static format(tag: string, messages: any[]) {
     const message = messages
       .map((msg) =>
-        typeof msg === "object" ? JSON.stringify(msg, null, 2) : msg
+        Logger.isObject(msg) // pretty print objects
+          ? JSON.stringify(msg, null, 2)
+          : Logger.isUndefinedOrNull(msg) // print undefined or null
+            ? msg + ""
+            : msg
       )
       .join(" ");
     const prefix = `[${tag}]`;

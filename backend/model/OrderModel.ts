@@ -27,4 +27,14 @@ const orderModelSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+["toJSON", "toObject"].forEach((key) =>
+  orderModelSchema.set(key as any, {
+    transform(doc: any, ret: any, opt: any) {
+      delete ret["__v"];
+      return ret;
+    },
+  })
+);
+
 export const orderModel = mongoose.model("Order", orderModelSchema);

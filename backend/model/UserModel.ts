@@ -1,6 +1,6 @@
 import mongoose, { InferSchemaType, SchemaTypes } from "mongoose";
 import { InferType, ObjectSchema, boolean, object, string } from "yup";
-import { OmitStrict, WithId } from "../utils";
+import { OmitStrict, WithId, objectIdSchema } from "../utils";
 
 /* -------------------------------- mongoose -------------------------------- */
 
@@ -33,12 +33,8 @@ const userModelSchema = new mongoose.Schema({
     required: true,
   },
   cart: {
-    type: [
-      {
-        id: { type: SchemaTypes.ObjectId, ref: "Product", required: true },
-        count: { type: Number, required: true },
-      },
-    ],
+    type: [SchemaTypes.ObjectId],
+    ref: "CartItem",
     default: [],
     required: true,
   },
@@ -73,14 +69,12 @@ export const userModel = mongoose.model("User", userModelSchema);
 /* --------------------------------- types ---------------------------------- */
 
 type UserModelSchema = InferSchemaType<typeof userModelSchema>;
-export type User = WithId<UserModelSchema>;
+export type User = WithId<OmitStrict<UserModelSchema, "password">>;
 
 export enum UserRole {
   user = "user",
   seller = "seller",
 }
-
-export type UserWithoutPassword = OmitStrict<User, "password">;
 
 /* ------------------------------- validation ------------------------------- */
 
@@ -97,14 +91,20 @@ const createUserValidator: ObjectSchema<
 
 export type CreateUserSchema = InferType<typeof createUserValidator>;
 
-const loginUserValidator = object().shape({
+const loginUserValidator = object({
   email: string().email().required(),
   password: string().required(),
 });
 
 export type LoginUserSchema = InferType<typeof loginUserValidator>;
 
+const cartAddItemValidator = object({
+  productId: objectIdSchema.required(),
+});
+export type CartAddItemSchema = InferType<typeof cartAddItemValidator>;
+
 export const validators = {
   createUser: createUserValidator,
   loginUser: loginUserValidator,
+  cartAddItem: cartAddItemValidator,
 };

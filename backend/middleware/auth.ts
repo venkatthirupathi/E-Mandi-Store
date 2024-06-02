@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { ApiError } from "../error";
 import { User, UserRole, userModel } from "../model/UserModel";
+import { HttpStatusCode } from "../utils";
 
 interface AuthenticatedResponse extends Response<unknown, { user: User }> {}
 
@@ -14,7 +15,7 @@ export const authenticate = function (...roles: UserRole[]) {
     const authHeader = req.headers["authorization"];
 
     if (!authHeader) {
-      throw new ApiError(401, "Unauthorized");
+      throw new ApiError(HttpStatusCode.Unauthorized, "Unauthorized");
     }
     const token = authHeader.split(" ")[1];
     const secret = process.env.JWT_SECRET;
@@ -24,12 +25,16 @@ export const authenticate = function (...roles: UserRole[]) {
     jwt.verify(token, secret, async (err, payload) => {
       if (err || !payload) {
         console.error(err);
-        return res.status(401).json({ error: "Unauthorized" });
+        return res
+          .status(HttpStatusCode.Unauthorized)
+          .json({ error: "Unauthorized" });
       }
       const userId = (payload as jwt.JwtPayload & { userId: string }).userId;
       const foundUser = await userModel.findById(userId);
       if (!foundUser || !roles.includes(foundUser.role as UserRole)) {
-        return res.status(401).json({ error: "Unauthorized" });
+        return res
+          .status(HttpStatusCode.Unauthorized)
+          .json({ error: "Unauthorized" });
       }
       res.locals.user = foundUser;
       next();
