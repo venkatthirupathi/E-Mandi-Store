@@ -24,7 +24,6 @@ export const authenticate = function (...roles: UserRole[]) {
     }
     jwt.verify(token, secret, async (err, payload) => {
       if (err || !payload) {
-        console.error(err);
         return res
           .status(HttpStatusCode.Unauthorized)
           .json({ error: "Unauthorized" });

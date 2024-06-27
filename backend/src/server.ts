@@ -3,7 +3,7 @@ import { authRouter } from "./controller/auth";
 import { cartRouter } from "./controller/cart";
 import { productRouter } from "./controller/product";
 import { errorHandler } from "./middleware/error";
-import { HttpStatusCode } from "./utils";
+import { HttpStatusCode, Logger } from "./utils";
 
 const app = express();
 // App middlewares
@@ -30,6 +30,6 @@ export const server = app;
 export function startServer() {
   const port = process.env.PORT || 3000;
   return server.listen(port, () => {
-    console.log(`Server started on port ${port}`);
+    Logger.info("startServer", `Server started on port ${port}`);
   });
 }

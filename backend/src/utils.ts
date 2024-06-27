@@ -1,4 +1,4 @@
-import { blue } from "colorette";
+import { Color, blue, red } from "colorette";
 import { Types, isValidObjectId } from "mongoose";
 import { mixed } from "yup";
 
@@ -11,7 +11,7 @@ export class Logger {
 
   /** Use for debug logging only */
   static log(tag: string, ...messages: any[]) {
-    console.log(Logger.format(tag, messages));
+    Logger.print(tag, messages, blue);
   }
 
   /** Use for debug logging only */
@@ -20,11 +20,19 @@ export class Logger {
   }
 
   static info(tag: string, ...messages: any[]) {
-    console.info(Logger.format(tag, messages));
+    Logger.print(tag, messages, blue);
   }
 
   info(...messages: any[]) {
     Logger.info(this.tag, ...messages);
+  }
+
+  static error(tag: string, ...messages: any[]) {
+    Logger.print(tag, messages, red);
+  }
+
+  error(...messages: any[]) {
+    Logger.error(this.tag, ...messages);
   }
 
   private static isObject(obj: any) {
@@ -35,18 +43,27 @@ export class Logger {
     return obj === undefined || obj === null;
   }
 
-  private static format(tag: string, messages: any[]) {
-    const message = messages
-      .map((msg) =>
-        Logger.isObject(msg) // pretty print objects
-          ? JSON.stringify(msg, null, 2)
-          : Logger.isUndefinedOrNull(msg) // print undefined or null
-            ? msg + ""
-            : msg
-      )
-      .join(" ");
-    const prefix = `[${tag}]`;
-    return `${blue(prefix)} ${message}`;
+  private static isError(obj: any) {
+    return obj instanceof Error;
+  }
+
+  private static print(tag: string, messages: any[], color: Color) {
+    // print tag first
+    process.stdout.write(color("[" + tag + "] "));
+    // then print messages
+    for (const message of messages) {
+      if (Logger.isError(message)) {
+        console.error(message);
+      } else if (Logger.isUndefinedOrNull(message)) {
+        process.stdout.write(message + "");
+      } else if (Logger.isObject(message)) {
+        process.stdout.write(JSON.stringify(message, null, 2));
+      } else {
+        process.stdout.write(message);
+      }
+      process.stdout.write(" ");
+    }
+    process.stdout.write("\n");
   }
 }
 
