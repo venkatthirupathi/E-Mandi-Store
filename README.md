@@ -11,13 +11,7 @@ npm install
 
 3. Copy **.env.sample** as **.env** and fill out appropriate values
 
-4. Start typescript watcher to auto build on file changes
-
-```bash
-npm run build:watch
-```
-
-5. In another terminal, run nodemon to auto restart the server on file changes
+4. Start the dev server
 
 ```bash
 npm run dev
