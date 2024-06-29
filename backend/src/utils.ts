@@ -47,6 +47,7 @@ export class Logger {
     return obj instanceof Error;
   }
 
+  // TODO: fix omitting 1st character in jest output
   private static print(tag: string, messages: any[], color: Color) {
     // print tag first
     process.stdout.write(color("[" + tag + "] "));
@@ -66,16 +67,6 @@ export class Logger {
     process.stdout.write("\n");
   }
 }
-
-export type Overwrite<T, U extends Partial<{ [k in keyof T]: unknown }>> = Pick<
-  T,
-  Exclude<keyof T, keyof U>
-> &
-  U;
-
-export type OmitStrict<T, K extends keyof T> = T extends any
-  ? Pick<T, Exclude<keyof T, K>>
-  : never;
 
 export const objectIdSchema = mixed<Types.ObjectId>().test(
   (val) => val !== undefined && isValidObjectId(val)

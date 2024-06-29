@@ -1,6 +1,7 @@
 import mongoose, { InferSchemaType, SchemaTypes } from "mongoose";
 import { InferType, ObjectSchema, boolean, object, string } from "yup";
-import { OmitStrict, WithId, objectIdSchema } from "../utils";
+import { OmitStrict } from "../types";
+import { WithId, objectIdSchema } from "../utils";
 
 /* -------------------------------- mongoose -------------------------------- */
 

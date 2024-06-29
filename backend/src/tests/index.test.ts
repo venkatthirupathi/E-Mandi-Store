@@ -2,26 +2,28 @@ import axios from "axios";
 import console from "console";
 import dotenv from "dotenv";
 import { models } from "mongoose";
-import { LoginResponse } from "../controller/auth";
-import { CartGetAllResponse } from "../controller/cart";
-import { ProductResponse } from "../controller/product";
+import { type LoginResponse } from "../controller/auth";
+import { type CartGetAllResponse } from "../controller/cart";
+import { type ProductResponse } from "../controller/product";
 import { connectDb } from "../db";
 import { randomProduct, randomUser } from "../faker";
 import { cartItemModel } from "../model/CartItem";
 import {
-  CreateProductSchema,
-  PatchProductSchema,
   productModel,
+  type CreateProductSchema,
+  type PatchProductSchema,
 } from "../model/ProductModel";
 import {
-  CartAddItemSchema,
-  CreateUserSchema,
-  LoginUserSchema,
   UserRole,
   userModel,
+  type CartAddItemSchema,
+  type CreateUserSchema,
+  type LoginUserSchema,
 } from "../model/UserModel";
 import { startServer } from "../server";
-import { HttpStatusCode, Logger, Overwrite } from "../utils";
+import type { MessageResponse, UserFromResponse } from "../types";
+import { Overwrite } from "../types";
+import { HttpStatusCode, Logger } from "../utils";
 dotenv.config({ path: ".env.test" });
 
 /* -------------------------------- Globals --------------------------------- */
@@ -73,16 +75,6 @@ const api = {
       await client.delete(`/cart/${productId}`, bearerToken(token)),
   },
 };
-
-/* --------------------------------- Types ---------------------------------- */
-
-interface UserFromResponse {
-  _id: string;
-}
-
-interface MessageResponse {
-  message: string;
-}
 
 /* ---------------------------- Helper functions ---------------------------- */
 

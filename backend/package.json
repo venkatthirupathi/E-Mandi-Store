@@ -11,7 +11,8 @@
     "start": "node dist/index.js",
     "husky:format": "pretty-quick --staged --verbose",
     "prepare": "cd .. && husky backend/.husky",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "db": "docker compose up -d"
   },
   "author": "",
   "license": "ISC",

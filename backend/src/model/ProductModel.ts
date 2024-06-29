@@ -1,6 +1,7 @@
 import mongoose, { InferSchemaType, SchemaTypes } from "mongoose";
 import { InferType, ObjectSchema, number, object, string } from "yup";
-import { OmitStrict, WithId } from "../utils";
+import { OmitStrict } from "../types";
+import { WithId } from "../utils";
 
 const productModelSchema = new mongoose.Schema({
   imageUrl: {

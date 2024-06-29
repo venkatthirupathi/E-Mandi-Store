@@ -3,7 +3,8 @@ import { ApiError } from "../error";
 import { authenticate } from "../middleware/auth";
 import { Product, productModel, validators } from "../model/ProductModel";
 import { UserRole, userModel } from "../model/UserModel";
-import { HttpStatusCode, Overwrite } from "../utils";
+import { Overwrite } from "../types";
+import { HttpStatusCode } from "../utils";
 
 export const productRouter = Router();
 

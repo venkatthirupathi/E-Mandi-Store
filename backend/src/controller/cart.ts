@@ -4,7 +4,8 @@ import { authenticate } from "../middleware/auth";
 import { CartItem, cartItemModel } from "../model/CartItem";
 import { Product, productModel } from "../model/ProductModel";
 import { UserRole, userModel, validators } from "../model/UserModel";
-import { HttpStatusCode, Overwrite } from "../utils";
+import { Overwrite } from "../types";
+import { HttpStatusCode } from "../utils";
 
 export const cartRouter = Router();
 

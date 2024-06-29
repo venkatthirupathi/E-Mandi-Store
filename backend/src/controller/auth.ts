@@ -3,7 +3,8 @@ import { Response, Router } from "express";
 import jwt from "jsonwebtoken";
 import { ApiError } from "../error";
 import { User, userModel, validators } from "../model/UserModel";
-import { HttpStatusCode, Overwrite } from "../utils";
+import { Overwrite } from "../types";
+import { HttpStatusCode } from "../utils";
 
 export const authRouter = Router();
 
