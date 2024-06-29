@@ -14,7 +14,6 @@ import {
   type PatchProductSchema,
 } from "../model/ProductModel";
 import {
-  UserRole,
   userModel,
   type CartAddItemSchema,
   type CreateUserSchema,
@@ -22,7 +21,7 @@ import {
 } from "../model/UserModel";
 import { startServer } from "../server";
 import type { MessageResponse, UserFromResponse } from "../types";
-import { Overwrite } from "../types";
+import { Overwrite, UserRole } from "../types";
 import { HttpStatusCode, Logger } from "../utils";
 dotenv.config({ path: ".env.test" });
 

@@ -1,3 +1,4 @@
+import cors from "cors";
 import express, { Router } from "express";
 import { authRouter } from "./controller/auth";
 import { cartRouter } from "./controller/cart";
@@ -7,6 +8,7 @@ import { HttpStatusCode, Logger } from "./utils";
 
 const app = express();
 // App middlewares
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

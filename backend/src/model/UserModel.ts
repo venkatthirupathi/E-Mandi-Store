@@ -1,6 +1,6 @@
 import mongoose, { InferSchemaType, SchemaTypes } from "mongoose";
-import { InferType, ObjectSchema, boolean, object, string } from "yup";
-import { OmitStrict } from "../types";
+import { InferType, ObjectSchema, object, string } from "yup";
+import { OmitStrict, UserRole } from "../types";
 import { WithId, objectIdSchema } from "../utils";
 
 /* -------------------------------- mongoose -------------------------------- */
@@ -27,6 +27,7 @@ const userModelSchema = new mongoose.Schema({
   },
   active: {
     type: Boolean,
+    default: true,
     required: true,
   },
   role: {
@@ -72,21 +73,18 @@ export const userModel = mongoose.model("User", userModelSchema);
 type UserModelSchema = InferSchemaType<typeof userModelSchema>;
 export type User = WithId<OmitStrict<UserModelSchema, "password">>;
 
-export enum UserRole {
-  user = "user",
-  seller = "seller",
-}
-
 /* ------------------------------- validation ------------------------------- */
 
 const createUserValidator: ObjectSchema<
-  OmitStrict<UserModelSchema, "orderIds" | "productsCreated" | "cart">
+  OmitStrict<
+    UserModelSchema,
+    "orderIds" | "productsCreated" | "cart" | "active"
+  >
 > = object({
   email: string().email().required(),
   password: string().required(),
   username: string().required(),
   mobileNumber: string().required(),
-  active: boolean().default(true).required(),
   role: string().oneOf(Object.values(UserRole)).required(),
 });
 

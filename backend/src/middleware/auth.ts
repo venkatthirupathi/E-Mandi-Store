@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { ApiError } from "../error";
-import { User, UserRole, userModel } from "../model/UserModel";
+import { User, userModel } from "../model/UserModel";
+import { UserRole } from "../types";
 import { HttpStatusCode } from "../utils";
 
 interface AuthenticatedResponse extends Response<unknown, { user: User }> {}

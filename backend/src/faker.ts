@@ -1,10 +1,10 @@
 import { faker } from "@faker-js/faker";
 import { CreateProductSchema } from "./model/ProductModel";
-import { CreateUserSchema, UserRole } from "./model/UserModel";
+import { CreateUserSchema } from "./model/UserModel";
+import { UserRole } from "./types";
 
 export function randomUser(role: UserRole): CreateUserSchema {
   return {
-    active: true,
     email: faker.internet.email(),
     mobileNumber: faker.phone.number(),
     password: faker.internet.password(),
