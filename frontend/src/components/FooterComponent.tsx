@@ -16,7 +16,6 @@ import "../component.css/FooterStyle.css";
 
 // export default FooterComponent;
 
-
 import * as React from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -30,6 +29,7 @@ const FooterComponent: React.FC = () => {
     <Box
       component="footer"
       className="footer"
+      alignItems="center"
       sx={{
         // backgroundColor: (theme) =>
         //   theme.palette.mode === "light"
@@ -44,12 +44,12 @@ const FooterComponent: React.FC = () => {
             <Typography variant="h6" color="text.primary" gutterBottom>
               About Us
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" color="#2E2D2D">
               We are E-Mandi.Co , dedicated to providing the best service to our
               customers.
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={4}>
+          {/* <Grid item xs={12} sm={4}>
             <Typography variant="h6" color="text.primary" gutterBottom>
               Contact Us
             </Typography>
@@ -62,22 +62,22 @@ const FooterComponent: React.FC = () => {
             <Typography variant="body2" color="text.secondary">
               Phone: +1 234 567 8901
             </Typography>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12} sm={4}>
-            <Typography variant="h6" color="text.primary" gutterBottom>
+            <Typography variant="h6" color="#2E2D2D" gutterBottom>
               Follow Us
             </Typography>
-            <Link href="https://www.facebook.com/" color="inherit">
+            <Link href="https://www.facebook.com/" color="#2E2D2D">
               <Facebook />
             </Link>
             <Link
               href="https://www.instagram.com/"
-              color="inherit"
+              color="#2E2D2D"
               sx={{ pl: 1, pr: 1 }}
             >
               <Instagram />
             </Link>
-            <Link href="https://www.twitter.com/" color="inherit">
+            <Link href="https://www.twitter.com/" color="#2E2D2D">
               <Twitter />
             </Link>
           </Grid>
@@ -85,7 +85,7 @@ const FooterComponent: React.FC = () => {
         <Box mt={5}>
           <Typography variant="body2" color="text.secondary" align="center">
             {"Copyright © "}
-            <Link color="inherit" href="https://your-website.com/">
+            <Link color="#2E2D2D" href="https://your-website.com/">
               E-Mandi.Co
             </Link>{" "}
             {new Date().getFullYear()}
@@ -95,6 +95,6 @@ const FooterComponent: React.FC = () => {
       </Container>
     </Box>
   );
-}
+};
 
 export default FooterComponent;

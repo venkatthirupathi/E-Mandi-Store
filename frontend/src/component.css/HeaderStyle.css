@@ -1,13 +1,18 @@
 .app-bar {
-  background-color: #2c8b2fcd !important;
+  background-color: #64b367cd !important;
   /* text-emphasis-color: black; */
+  /* color: black; */
+}
+
+.title {
+  color: black;
 }
 
 .logo-text {
   font-family: "monospace";
   font-weight: 700;
   letter-spacing: 0.3rem;
-  color:black;
+  color: black;
   text-decoration: none;
 }
 
