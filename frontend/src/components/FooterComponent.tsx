@@ -1,28 +1,11 @@
-// import React from "react";
-import "../component.css/FooterStyle.css";
-// const FooterComponent: React.FC = () => {
-//   return (
-//     <>
-//       <footer className="footer sticky-bottom bg-dark text-white mt-auto py-3">
-//         <div className="container text-center">
-//           <span className="text-muted">
-//             © 2024 E-mandi.Co . All rights reserved.
-//           </span>
-//         </div>
-//       </footer>
-//     </>
-//   );
-// };
-
-// export default FooterComponent;
-
-import * as React from "react";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import { Facebook, Instagram, Twitter } from "@mui/icons-material";
 import { Box } from "@mui/material";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
+import "../component.css/FooterStyle.css";
 
 const FooterComponent: React.FC = () => {
   return (
@@ -31,11 +14,8 @@ const FooterComponent: React.FC = () => {
       className="footer"
       alignItems="center"
       sx={{
-        // backgroundColor: (theme) =>
-        //   theme.palette.mode === "light"
-        //     ? theme.palette.grey[200]
-        //     : theme.palette.grey[800],
         p: 2,
+        marginTop: 8,
       }}
     >
       <Container maxWidth="lg">
@@ -49,20 +29,6 @@ const FooterComponent: React.FC = () => {
               customers.
             </Typography>
           </Grid>
-          {/* <Grid item xs={12} sm={4}>
-            <Typography variant="h6" color="text.primary" gutterBottom>
-              Contact Us
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              123 Main Street, Anytown, USA
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Email: emandi@org.com
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Phone: +1 234 567 8901
-            </Typography>
-          </Grid> */}
           <Grid item xs={12} sm={4}>
             <Typography variant="h6" color="#2E2D2D" gutterBottom>
               Follow Us

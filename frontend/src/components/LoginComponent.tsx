@@ -1,8 +1,8 @@
+import CheckIcon from "@mui/icons-material/Check";
+import Alert from "@mui/material/Alert";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../component.css/LoginStyle.css"; // Make sure to create this CSS file
-import Alert from "@mui/material/Alert";
-import CheckIcon from "@mui/icons-material/Check";
 
 const LoginComponent: React.FC = () => {
   const navigate = useNavigate();

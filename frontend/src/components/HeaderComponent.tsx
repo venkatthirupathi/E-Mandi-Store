@@ -1,29 +1,27 @@
-// import * as React from "react";
-import { useState } from "react";
-import { styled, alpha } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
-// import AdbIcon from "@mui/icons-material/Adb";
-import SearchIcon from "@mui/icons-material/Search";
-import Avatar from "@mui/material/Avatar";
-import "../component.css/HeaderStyle.css";
-import Logo1 from "../assets/images/Logo1.png";
+import { Logout } from "@mui/icons-material";
+import PersonAdd from "@mui/icons-material/PersonAdd";
 import PlaceIcon from "@mui/icons-material/Place";
+import SearchIcon from "@mui/icons-material/Search";
+import Settings from "@mui/icons-material/Settings";
 import ShoppingCartTwoToneIcon from "@mui/icons-material/ShoppingCartTwoTone";
-import * as React from "react";
+import { Button } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import InputBase from "@mui/material/InputBase";
+import ListItemIcon from "@mui/material/ListItemIcon";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Divider from "@mui/material/Divider";
+import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
-import PersonAdd from "@mui/icons-material/PersonAdd";
-import Settings from "@mui/icons-material/Settings";
-import Logout from "@mui/icons-material/Logout";
-import { Button } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import { styled } from "@mui/material/styles";
+import * as React from "react";
+import { useState } from "react";
+import Logo1 from "../assets/images/Logo1.png";
+import "../component.css/HeaderStyle.css";
 
 const Search = styled("div")(({ theme }) => ({
   flex: 1,
@@ -81,7 +79,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-function HeaderComponent() {
+function Navbar() {
   //mui code for menu - profile pop up
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -170,15 +168,6 @@ function HeaderComponent() {
               mr: 2,
             }}
           />
-
-          {/* <Box sx={{ mr: 2, display: "flex", alignItems: "center" }}>
-            <IconButton 
-              sx={{ p: 0 }}
-              onClick = {handleClick}
-            >
-              <Avatar alt="User" src="/static/images/avatar/1.jpg" />
-            </IconButton>
-          </Box> */}
 
           {/* Toggle the components based on if they are logged in or not*/}
 
@@ -317,4 +306,4 @@ function HeaderComponent() {
   );
 }
 
-export default HeaderComponent;
+export default Navbar;

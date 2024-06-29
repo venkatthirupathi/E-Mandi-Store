@@ -1,59 +1,38 @@
-import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
+import { SnackbarProvider } from "notistack";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
-import HomeComponent from "./components/HomeComponent";
-import HeaderComponent from "./components/HeaderComponent";
-import FooterComponent from "./components/FooterComponent";
-import LoginComponent from "./components/LoginComponent";
-import SignUpComponent from "./components/SignUpComponent";
-import { Box } from "@mui/material";
-import CustomerDashComponent from "./components/CustomerDashComponent";
 import { AdminDashComponent } from "./components/AdminDashComponent";
-import AdminProducts from "./components/AdminProducts";
-import CustomerProducts from "./components/CustomerProducts";
-import CartComponent from "./components/CartComponent";
-import CustomerOrders from "./components/CustomerOrders";
 import AdminOrders from "./components/AdminOrders";
+import AdminProducts from "./components/AdminProducts";
+import CartComponent from "./components/CartComponent";
+import CustomerDashComponent from "./components/CustomerDashComponent";
+import CustomerOrders from "./components/CustomerOrders";
+import CustomerProducts from "./components/CustomerProducts";
+import FooterComponent from "./components/FooterComponent";
+import Navbar from "./components/HeaderComponent";
+import HomeComponent from "./components/HomeComponent";
+import LoginComponent from "./components/LoginComponent";
+import Signup from "./pages/Signup";
 
 function App() {
-  // const [count, setCount] = useState(0)
-
   return (
     <>
+      <SnackbarProvider />
       <Router>
-        <HeaderComponent />
+        <Navbar />
         <Routes>
           <Route path="/" element={<HomeComponent />} />
-          <Route path="/api/user/login" element={<LoginComponent />} />
-          <Route path="/api/user/signup" element={<SignUpComponent />} />
-          <Route path="/home" element = {<HomeComponent/>}/>
-          <Route path="/api/user/dashboard" element = {<CustomerDashComponent/>}/>
-          <Route path="/api/admin/dashboard" element = {<AdminDashComponent/>}/>
-          <Route path="/api/admin/products" element = {<AdminProducts/>}/>
-          <Route path="/api/user/products" element = {<CustomerProducts/>}/>
-          <Route path="/api/user/cart" element = {<CartComponent/>}/>
-          <Route path="/api/user/orders" element = {<CustomerOrders/>}/>
-          <Route path="/api/admin/orders" element = {<AdminOrders/>}/>
+          <Route path="/login" element={<LoginComponent />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/user/dashboard" element={<CustomerDashComponent />} />
+          <Route path="/admin/dashboard" element={<AdminDashComponent />} />
+          <Route path="/admin/products" element={<AdminProducts />} />
+          <Route path="/user/products" element={<CustomerProducts />} />
+          <Route path="/user/cart" element={<CartComponent />} />
+          <Route path="/user/orders" element={<CustomerOrders />} />
+          <Route path="/admin/orders" element={<AdminOrders />} />
         </Routes>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              minHeight: "100vh",
-            }}
-          >
-            <Box
-              component="main"
-              sx={{
-                flexGrow: 1,
-              }}
-            >
-              {/* Your main content goes here */}
-            </Box>
-            <FooterComponent />
-        </Box>
+        <FooterComponent />
       </Router>
     </>
   );
