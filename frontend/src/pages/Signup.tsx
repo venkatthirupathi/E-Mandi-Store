@@ -10,12 +10,11 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import { AxiosError } from "axios";
-import { enqueueSnackbar } from "notistack";
 import React, { PropsWithChildren } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { API } from "../services";
+import { errorSnackbar, getErrorMessage, successSnackbar } from "../utils";
 
 function FormGroup({ children }: PropsWithChildren) {
   return <Stack spacing={1}>{children}</Stack>;
@@ -33,28 +32,17 @@ const Signup: React.FC = () => {
 
   const onSubmit: SubmitHandler<CreateUserSchema> = async (data) => {
     let errorMessage;
-    fetch("", {
-      method: "GET",
-    });
     try {
       const response = await API.auth.signup(data);
       if ("message" in response.data) {
-        enqueueSnackbar({
-          message: "Signed up successfully",
-          variant: "success",
-        });
+        successSnackbar("Signed up successfully");
         navigate("/login");
         return;
       }
     } catch (error) {
-      const err = error as AxiosError;
-      if (err.response && "error" in (err.response.data as any)) {
-        errorMessage = (err.response.data as any).error;
-      } else {
-        errorMessage = (error as AxiosError).message;
-      }
+      errorMessage = getErrorMessage(error);
     }
-    enqueueSnackbar({ message: errorMessage, variant: "error" });
+    errorSnackbar(errorMessage);
   };
   return (
     <Stack alignItems={"center"} spacing={4} marginTop={6}>

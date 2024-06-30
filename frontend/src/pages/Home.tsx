@@ -1,48 +1,20 @@
-import React, { useEffect, useState } from "react";
-// import axios from 'axios';
-// import CustomerDashComponent from './CustomerDashComponent';
-import { useNavigate } from "react-router-dom";
-import image1 from "../assets/images/image1.jpg";
-import image2 from "../assets/images/image2.jpg";
-import image3 from "../assets/images/image3.jpg";
-// import image4 from '../assets/images/download.jpeg';
-import "../component.css/HomeStyle.css";
-import { Box, Button, CardActions, Grid } from "@mui/material";
+import { Button, CardActionArea, CardActions, Grid } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import image1 from "../assets/images/image1.jpg";
+import image2 from "../assets/images/image2.jpg";
+import image3 from "../assets/images/image3.jpg";
 
 const images = [image1, image2, image3];
 
 const Home: React.FC = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  // const [homeContent, setHomeContent] = useState('');
-  const buttonText = "Shop Online";
 
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-  //   }, 5000); // Change image every 5 seconds
-  //   return () => clearInterval(interval);
-  // }, []);
-
-  // useEffect(() => {
-  //   const fetchHomeContent = async () => {
-  //     try {
-  //       const response = await axios.get('/home');
-  //       console.log(response.data);
-  //       setHomeContent(response.data.homeContent);
-  //     } catch (error) {
-  //       console.error('Error fetching home content:', error);
-  //     }
-  //   };
-
-  //   fetchHomeContent();
-  // }, []);
 
   const handleClick = () => {
     navigate("/api/user/dashboard");
@@ -50,10 +22,6 @@ const Home: React.FC = () => {
 
   return (
     <>
-      {/* <div>
-      <h1> Helloooo </h1>
-     </div> */}
-
       {/* Items are displayed according to the data from db */}
 
       <Grid
@@ -123,9 +91,3 @@ const Home: React.FC = () => {
 };
 
 export default Home;
-
-// function Welcome() {
-//   return <h1>Hello CVR</h1>;
-// }
-
-// export default Welcome;
