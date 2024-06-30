@@ -6,8 +6,9 @@ import {
   Response,
 } from "express";
 import { MongoServerError } from "mongodb";
+import { Logger } from "../Logger";
 import { ApiError } from "../error";
-import { HttpStatusCode, Logger } from "../utils";
+import { HttpStatusCode } from "../utils";
 
 enum MongoServerErrorCode {
   DuplicateKey = 11000,

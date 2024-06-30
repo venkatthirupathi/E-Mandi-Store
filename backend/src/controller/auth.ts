@@ -28,7 +28,15 @@ authRouter.post(
 
 export interface LoginResponse {
   token: string;
-  user: Overwrite<User, { _id: string }>;
+  user: Overwrite<
+    User,
+    {
+      _id: string;
+      cart: string[];
+      orderIds: string[];
+      productsCreated: string[];
+    }
+  >;
 }
 
 authRouter.post(

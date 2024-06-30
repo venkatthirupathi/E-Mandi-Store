@@ -2,6 +2,7 @@ import axios from "axios";
 import console from "console";
 import dotenv from "dotenv";
 import { models } from "mongoose";
+import { Logger } from "../Logger";
 import { type LoginResponse } from "../controller/auth";
 import { type CartGetAllResponse } from "../controller/cart";
 import { type ProductResponse } from "../controller/product";
@@ -22,7 +23,7 @@ import {
 import { startServer } from "../server";
 import type { MessageResponse, UserFromResponse } from "../types";
 import { Overwrite, UserRole } from "../types";
-import { HttpStatusCode, Logger } from "../utils";
+import { HttpStatusCode } from "../utils";
 dotenv.config({ path: ".env.test" });
 
 /* -------------------------------- Globals --------------------------------- */

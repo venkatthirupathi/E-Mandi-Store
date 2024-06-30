@@ -1,10 +1,11 @@
 import cors from "cors";
 import express, { Router } from "express";
+import { Logger } from "./Logger";
 import { authRouter } from "./controller/auth";
 import { cartRouter } from "./controller/cart";
 import { productRouter } from "./controller/product";
 import { errorHandler } from "./middleware/error";
-import { HttpStatusCode, Logger } from "./utils";
+import { HttpStatusCode } from "./utils";
 
 const app = express();
 // App middlewares

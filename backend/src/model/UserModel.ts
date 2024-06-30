@@ -1,7 +1,12 @@
-import mongoose, { InferSchemaType, SchemaTypes } from "mongoose";
-import { InferType, ObjectSchema, object, string } from "yup";
+import mongoose, {
+  InferSchemaType,
+  SchemaTypes,
+  Types,
+  isValidObjectId,
+} from "mongoose";
+import { InferType, ObjectSchema, mixed, object, string } from "yup";
 import { OmitStrict, UserRole } from "../types";
-import { WithId, objectIdSchema } from "../utils";
+import { WithId } from "../utils";
 
 /* -------------------------------- mongoose -------------------------------- */
 
@@ -75,6 +80,10 @@ export type User = WithId<OmitStrict<UserModelSchema, "password">>;
 
 /* ------------------------------- validation ------------------------------- */
 
+const objectIdSchema = mixed<Types.ObjectId>().test(
+  (val) => val !== undefined && isValidObjectId(val)
+);
+
 const createUserValidator: ObjectSchema<
   OmitStrict<
     UserModelSchema,
@@ -100,6 +109,7 @@ export type LoginUserSchema = InferType<typeof loginUserValidator>;
 const cartAddItemValidator = object({
   productId: objectIdSchema.required(),
 });
+
 export type CartAddItemSchema = InferType<typeof cartAddItemValidator>;
 
 export const validators = {
