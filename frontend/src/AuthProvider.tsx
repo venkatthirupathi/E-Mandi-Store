@@ -1,4 +1,4 @@
-import { LoginResponse } from "@backend/controller/auth";
+import type { LoginResponse } from "@backend/controller/auth";
 import { PropsWithChildren, createContext, useEffect, useState } from "react";
 
 interface DefaultValue {

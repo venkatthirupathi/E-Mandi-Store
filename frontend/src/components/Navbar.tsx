@@ -19,6 +19,7 @@ import * as React from "react";
 import { Link, createSearchParams, useNavigate } from "react-router-dom";
 import Logo1 from "../assets/images/Logo1.png";
 import "../component.css/HeaderStyle.css";
+import { zIndex } from "../constants";
 import { useAuth } from "../hooks";
 import HStack from "./HStack";
 import LinkHref from "./LinkHref";
@@ -308,6 +309,7 @@ function Navbar() {
             width: "100%",
           },
         },
+        zIndex: zIndex.AppBar,
       })}
     >
       <Box maxWidth="xl">

@@ -1,111 +1,21 @@
-import { LoginUserSchema } from "@backend/model/UserModel";
+import type { LoginUserSchema } from "@backend/model/UserModel";
 import { UserRole } from "@backend/types";
-import {
-  Button,
-  Card,
-  CardContent,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { PropsWithChildren } from "react";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { Button, TextField, Typography } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Checkbox from "@mui/material/Checkbox";
+import CssBaseline from "@mui/material/CssBaseline";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import Paper from "@mui/material/Paper";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks";
 import { API } from "../services";
 import { errorSnackbar, getErrorMessage, successSnackbar } from "../utils";
-
-// function FormGroup({ children }: PropsWithChildren) {
-//   return <Stack spacing={1}>{children}</Stack>;
-// }
-
-// // TODO: validation
-// export default function Login() {
-// const { account, setAccount } = useAuth();
-
-// console.log({ account });
-// const navigate = useNavigate();
-// const { register, handleSubmit } = useForm<LoginUserSchema>();
-
-// const onSubmit: SubmitHandler<LoginUserSchema> = async (data) => {
-//   let errorMessage;
-//   try {
-//     // send request
-//     const response = await API.auth.login(data);
-//     // store account details
-//     console.log({ data: response.data });
-//     setAccount(response.data);
-//     // show snackbar
-//     successSnackbar("Logged in successfully");
-//     if (response.data.user.role === UserRole.seller) {
-//       navigate("/seller/dashboard");
-//     } else {
-//       navigate("/");
-//     }
-//     return;
-//   } catch (error) {
-//     errorMessage = getErrorMessage(error);
-//   }
-//   errorSnackbar(errorMessage);
-// };
-//   return (
-//     <Stack alignItems={"center"} spacing={4} marginTop={6}>
-//       <Typography variant="h2" fontSize={32} sx={{ fontWeight: "bold" }}>
-//         Login
-//       </Typography>
-//       <Card sx={{ minWidth: 400 }} elevation={4}>
-//         <CardContent sx={{ padding: 3 }}>
-//           <form onSubmit={handleSubmit(onSubmit)}>
-//             <Stack spacing={2}>
-//               <FormGroup>
-//                 <label htmlFor="email">Email</label>
-//                 <TextField
-//                   size="small"
-//                   id="email"
-//                   type="email"
-//                   placeholder="Enter your email"
-//                   variant="outlined"
-//                   {...register("email")}
-//                   required
-//                 />
-//               </FormGroup>
-//               <FormGroup>
-//                 <label htmlFor="password">Password</label>
-//                 <TextField
-//                   size="small"
-//                   type="password"
-//                   variant="outlined"
-//                   id="password"
-//                   placeholder="Enter your password"
-//                   required
-//                   {...register("password")}
-//                 />
-//               </FormGroup>
-//               <Button type="submit" variant="contained">
-//                 Login
-//               </Button>
-//             </Stack>
-//           </form>
-//         </CardContent>
-//       </Card>
-//     </Stack>
-//   );
-// }
-
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-// import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-// import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-// import Typography from "@mui/material/Typography";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 function Copyright(props: any) {
   return (
@@ -139,7 +49,7 @@ export default function SignInSide() {
     let errorMessage;
     try {
       // send request
-      const response = await API.auth.login(data);
+      const response = await API.login(data);
       // store account details
       console.log({ data: response.data });
       setAccount(response.data);
@@ -206,7 +116,7 @@ export default function SignInSide() {
                 fullWidth
                 id="email"
                 label="Email Address"
-                // name="email"
+                name="email"
                 autoComplete="email"
                 autoFocus
                 {...register("email")}
@@ -215,7 +125,7 @@ export default function SignInSide() {
                 margin="normal"
                 required
                 fullWidth
-                // name="password"
+                name="password"
                 label="Password"
                 type="password"
                 id="password"
@@ -236,7 +146,7 @@ export default function SignInSide() {
               </Button>
               <Grid container>
                 <Grid item>
-                  <Link href="http://localhost:5173/signup" variant="body2">
+                  <Link href="/signup" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
