@@ -3,26 +3,16 @@ import console from "console";
 import dotenv from "dotenv";
 import { models } from "mongoose";
 import { Logger } from "../Logger";
-import { type LoginResponse } from "../controller/auth";
+import { ApiClient } from "../client";
 import { type CartGetAllResponse } from "../controller/cart";
-import { type ProductResponse } from "../controller/product";
 import { connectDb } from "../db";
 import { randomProduct, randomUser } from "../faker";
 import { cartItemModel } from "../model/CartItem";
-import {
-  productModel,
-  type CreateProductSchema,
-  type PatchProductSchema,
-} from "../model/ProductModel";
-import {
-  userModel,
-  type CartAddItemSchema,
-  type CreateUserSchema,
-  type LoginUserSchema,
-} from "../model/UserModel";
+import { productModel, type CreateProductSchema } from "../model/ProductModel";
+import { userModel, type CreateUserSchema } from "../model/UserModel";
 import { startServer } from "../server";
-import type { MessageResponse, UserFromResponse } from "../types";
-import { Overwrite, UserRole } from "../types";
+import type { UserFromResponse } from "../types";
+import { UserRole } from "../types";
 import { HttpStatusCode } from "../utils";
 dotenv.config({ path: ".env.test" });
 
@@ -38,58 +28,14 @@ const client = axios.create({
   baseURL: "http://localhost:3024/api",
 });
 
-const api = {
-  auth: {
-    signup: async (data: CreateUserSchema) =>
-      await client.post<MessageResponse>("/auth/signup", data),
-    login: async (data: LoginUserSchema) =>
-      await client.post<LoginResponse>("/auth/login", data),
-  },
-  product: {
-    create: async (data: CreateProductSchema, token: string) =>
-      await client.post<ProductResponse>("/product", data, bearerToken(token)),
-    getAll: async () =>
-      await client.get<{ products: ProductResponse["product"][] }>("/product"),
-    getOne: async (id: string) =>
-      await client.get<ProductResponse>(`/product/${id}`),
-    update: async (id: string, data: PatchProductSchema, token: string) =>
-      await client.patch<ProductResponse>(
-        `/product/${id}`,
-        data,
-        bearerToken(token)
-      ),
-    delete: async (id: string, token: string) =>
-      await client.delete<MessageResponse>(
-        `/product/${id}`,
-        bearerToken(token)
-      ),
-  },
-  cart: {
-    addProduct: async (
-      data: Overwrite<CartAddItemSchema, { productId: string }>,
-      token: string
-    ) => await client.post<MessageResponse>(`/cart`, data, bearerToken(token)),
-    getAll: async (token: string) =>
-      await client.get<CartGetAllResponse>("/cart", bearerToken(token)),
-    removeProduct: async (productId: string, token: string) =>
-      await client.delete(`/cart/${productId}`, bearerToken(token)),
-  },
-};
+const api = new ApiClient(client);
 
 /* ---------------------------- Helper functions ---------------------------- */
 
-function bearerToken(token: string) {
-  return {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-}
-
 async function signupAndLogin(user: CreateUserSchema) {
-  await api.auth.signup(user);
+  await api.signup(user);
 
-  const res = await api.auth.login({
+  const res = await api.login({
     email: user.email,
     password: user.password,
   });
@@ -109,12 +55,12 @@ beforeAll(async () => {
 
 describe("Auth endpoints", () => {
   it("should signup and login user", async () => {
-    const signupResponse = await api.auth.signup(testUser);
+    const signupResponse = await api.signup(testUser);
     expect(signupResponse.status).toBe(HttpStatusCode.Created);
     expect(signupResponse.data).toHaveProperty("message");
     expect(await userModel.findOne({ email: testUser.email })).not.toBeFalsy();
 
-    const loginResponse = await api.auth.login({
+    const loginResponse = await api.login({
       email: testUser.email,
       password: testUser.password,
     });
@@ -141,7 +87,7 @@ describe("Product endpoints", () => {
 
   beforeEach(async () => {
     testProduct = randomProduct();
-    const response = await api.product.create(testProduct, token);
+    const response = await api.createProduct(testProduct, token);
     productId = response.data.product._id;
   });
 
@@ -150,7 +96,7 @@ describe("Product endpoints", () => {
   });
 
   it("should create a product", async () => {
-    const response = await api.product.create(testProduct, token);
+    const response = await api.createProduct(testProduct, token);
     expect(response.status).toBe(HttpStatusCode.Created);
     expect(response.data).toHaveProperty("product");
     productId = response.data.product._id;
@@ -159,14 +105,14 @@ describe("Product endpoints", () => {
   });
 
   it("should get all products", async () => {
-    const response = await api.product.getAll();
+    const response = await api.getAllProducts();
     expect(response.status).toBe(HttpStatusCode.Ok);
     expect(response.data).toHaveProperty("products");
     expect(response.data.products).toHaveLength(1);
   });
 
   it("should get a product", async () => {
-    const response = await api.product.getOne(productId);
+    const response = await api.getOneProduct(productId);
     expect(response.status).toBe(HttpStatusCode.Ok);
     expect(response.data).toHaveProperty("product");
     expect(response.data.product._id).toBe(productId);
@@ -174,7 +120,7 @@ describe("Product endpoints", () => {
   });
 
   it("should update a product", async () => {
-    const response = await api.product.update(
+    const response = await api.updateOneProduct(
       productId,
       {
         price: 1000,
@@ -190,7 +136,7 @@ describe("Product endpoints", () => {
   });
 
   it("should delete a product", async () => {
-    const response = await api.product.delete(productId, token);
+    const response = await api.deleteOneProduct(productId, token);
     expect(response.status).toBe(HttpStatusCode.Ok);
     expect(response.data).toHaveProperty("message");
     expect(await productModel.findById(productId)).toBeFalsy();
@@ -222,10 +168,10 @@ describe("Cart endpoints", () => {
 
   beforeEach(async () => {
     product = randomProduct();
-    const response = await api.product.create(product, sellerToken);
+    const response = await api.createProduct(product, sellerToken);
     productId = response.data.product._id;
 
-    await api.cart.addProduct(
+    await api.addOneProductToCart(
       {
         productId,
       },
@@ -239,7 +185,7 @@ describe("Cart endpoints", () => {
   });
 
   it("should add a product to cart", async () => {
-    const response = await api.cart.addProduct(
+    const response = await api.addOneProductToCart(
       {
         productId,
       },
@@ -262,7 +208,7 @@ describe("Cart endpoints", () => {
   });
 
   it("should get user's cart", async () => {
-    const response = await api.cart.getAll(userToken);
+    const response = await api.getAllProductsFromCart(userToken);
     expect(response.status).toBe(HttpStatusCode.Ok);
 
     expect(response.data).toHaveProperty("cart");
@@ -273,22 +219,19 @@ describe("Cart endpoints", () => {
 
   it("should get user's cart with multiple items", async () => {
     // add existing product
-    await api.cart.addProduct({ productId }, userToken);
+    await api.addOneProductToCart({ productId }, userToken);
 
     // add new product
     const newProduct = randomProduct();
-    const newProductResponse = await api.product.create(
-      newProduct,
-      sellerToken
-    );
-    await api.cart.addProduct(
+    const newProductResponse = await api.createProduct(newProduct, sellerToken);
+    await api.addOneProductToCart(
       {
         productId: newProductResponse.data.product._id,
       },
       userToken
     );
 
-    const response = await api.cart.getAll(userToken);
+    const response = await api.getAllProductsFromCart(userToken);
     expect(response.status).toBe(HttpStatusCode.Ok);
     expect(response.data).toHaveProperty("cart");
     expect(response.data.cart).toHaveLength(2);
@@ -309,20 +252,20 @@ describe("Cart endpoints", () => {
   it("should decrement quantity", async () => {
     // product created and added in beforeEach - count 1
     // that same product added again - count 2
-    await api.cart.addProduct({ productId }, userToken);
+    await api.addOneProductToCart({ productId }, userToken);
     // add a new product to cart and test if it's data is not being changed
-    const newProduct = await api.product.create(randomProduct(), sellerToken);
-    await api.cart.addProduct(
+    const newProduct = await api.createProduct(randomProduct(), sellerToken);
+    await api.addOneProductToCart(
       { productId: newProduct.data.product._id },
       userToken
     );
 
     // remove 1 quantity of the product - count 1
-    const response = await api.cart.removeProduct(productId, userToken);
+    const response = await api.removeOneProductFromCart(productId, userToken);
     expect(response.status).toBe(HttpStatusCode.Ok);
     expect(response.data).toHaveProperty("message");
 
-    const allCartItems = await api.cart.getAll(userToken);
+    const allCartItems = await api.getAllProductsFromCart(userToken);
     expect(allCartItems.data.cart).toHaveLength(2);
 
     const received = allCartItems.data.cart.map((item) => ({
@@ -340,17 +283,17 @@ describe("Cart endpoints", () => {
 
   it("should delete cart item and remove its id from user.cart", async () => {
     // add a new product to cart and test if it's data is not being changed
-    const newProduct = await api.product.create(randomProduct(), sellerToken);
-    await api.cart.addProduct(
+    const newProduct = await api.createProduct(randomProduct(), sellerToken);
+    await api.addOneProductToCart(
       { productId: newProduct.data.product._id },
       userToken
     );
 
-    const response = await api.cart.removeProduct(productId, userToken);
+    const response = await api.removeOneProductFromCart(productId, userToken);
     expect(response.status).toBe(HttpStatusCode.Ok);
     expect(response.data).toHaveProperty("message");
 
-    const allCartItems = await api.cart.getAll(userToken);
+    const allCartItems = await api.getAllProductsFromCart(userToken);
     expect(allCartItems.data.cart).toHaveLength(1);
 
     const received = allCartItems.data.cart.map((item) => ({
