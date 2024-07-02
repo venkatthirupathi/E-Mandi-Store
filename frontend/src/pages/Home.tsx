@@ -31,8 +31,12 @@ const Home: React.FC = () => {
         sx={{ pt: 3, pl: 3 }}
       >
         <Grid item>
-          <Card sx={{ maxWidth: 345 }}>
-            <CardActionArea>
+          <Card sx={{ width: 345 }}>
+            <CardActionArea
+              onClick={() => {
+                navigate("/product/:id");
+              }}
+            >
               <CardMedia
                 component="img"
                 height="140"
@@ -46,21 +50,20 @@ const Home: React.FC = () => {
                   Product 1
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Product 1 description
+                  Product 1 description / cost
                 </Typography>
               </CardContent>
             </CardActionArea>
-            <CardActions>
-              <Button size="small" color="primary">
-                Share
-              </Button>
-            </CardActions>
           </Card>
         </Grid>
 
         <Grid item>
-          <Card sx={{ maxWidth: 345 }}>
-            <CardActionArea>
+          <Card sx={{ width: 345 }}>
+            <CardActionArea
+              onClick={() => {
+                navigate("/product/:id");
+              }}
+            >
               <CardMedia
                 component="img"
                 height="140"
@@ -74,15 +77,10 @@ const Home: React.FC = () => {
                   Product 1
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Product 1 description
+                  Product 1 description / cost
                 </Typography>
               </CardContent>
             </CardActionArea>
-            <CardActions>
-              <Button size="small" color="primary">
-                Share
-              </Button>
-            </CardActions>
           </Card>
         </Grid>
       </Grid>

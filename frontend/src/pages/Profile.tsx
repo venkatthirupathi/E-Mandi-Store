@@ -8,7 +8,8 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function PageTitle() {
@@ -87,6 +88,19 @@ function EditMenu() {
   //   console.log("submitting");
   // }
 
+  const [userDetails, setUserDetails] = useState({});
+
+  useEffect(() => {
+    axios
+      .get("/api/user-details/" + userId)
+      .then((response) => {
+        setUserDetails(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [userId]);
+
   return (
     <>
       <Box
@@ -101,11 +115,23 @@ function EditMenu() {
         <form>
           <Stack spacing={2}>
             <FormGroup>
+              <label htmlFor="name">Name</label>
+              <TextField
+                size="small"
+                id="name"
+                type="name"
+                value={userDetails.name}
+                placeholder="Enter your email"
+                variant="outlined"
+              />
+            </FormGroup>
+            <FormGroup>
               <label htmlFor="email">Email</label>
               <TextField
                 size="small"
                 id="email"
                 type="email"
+                value={userDetails.email}
                 placeholder="Enter your email"
                 variant="outlined"
               />
@@ -116,6 +142,7 @@ function EditMenu() {
                 size="small"
                 type="password"
                 variant="outlined"
+                value={userDetails.password}
                 id="password"
                 placeholder="Enter your password"
               />
@@ -126,6 +153,7 @@ function EditMenu() {
                 size="small"
                 type="text"
                 id="username"
+                value={userDetails.username}
                 placeholder="Enter your username"
               />
             </FormGroup>
@@ -133,8 +161,9 @@ function EditMenu() {
               <label htmlFor="mobileNumber">Mobile number</label>
               <TextField
                 size="small"
-                type="text"
+                type="number"
                 id="mobileNumber"
+                value={userDetails.number}
                 placeholder="Enter your mobile number"
               />
             </FormGroup>

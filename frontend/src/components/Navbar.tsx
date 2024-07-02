@@ -27,7 +27,7 @@ const Search = styled(Box)(({ theme }) => ({
   position: "relative",
   flex: 1,
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: "#F4F2E9", // White background
+  backgroundColor: "white", // White background
   "&:hover": {
     backgroundColor: "#FEFDF7", // Lighter white on hover
   },
@@ -63,6 +63,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 function PrimarySearchAppBar() {
   const [query, setQuery] = React.useState("");
+  const [product, setProduct] = React.useState("");
+  // const handleSearch = (v) => {
+  //   setProduct(v.target.value);
+  //   setQuery(v.target.value)
+  // }
   const navigate = useNavigate();
   return (
     <Search

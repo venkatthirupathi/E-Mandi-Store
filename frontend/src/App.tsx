@@ -1,4 +1,5 @@
 import { SnackbarProvider } from "notistack";
+import { ReactNode } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import AuthProvider from "./AuthProvider";
@@ -12,22 +13,33 @@ import Search from "./pages/Search";
 import SellerDashboard from "./pages/SellerDashboard";
 import Signup from "./pages/Signup";
 
+function Layout(children: ReactNode) {
+  return (
+    <>
+      <Navbar />
+      {children}
+      <FooterComponent />
+    </>
+  );
+}
+
 function App() {
   return (
     <AuthProvider>
       <SnackbarProvider />
       <Router>
-        <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={Layout(<Home />)} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/seller/dashboard" element={<SellerDashboard />} />
-          <Route path="/cart" element={<Cart />} />
+          <Route path="/profile" element={Layout(<Profile />)} />
+          <Route path="/search" element={Layout(<Search />)} />
+          <Route
+            path="/seller/dashboard"
+            element={Layout(<SellerDashboard />)}
+          />
+          <Route path="/cart" element={Layout(<Cart />)} />
         </Routes>
-        <FooterComponent />
       </Router>
     </AuthProvider>
   );
