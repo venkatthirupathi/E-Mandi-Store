@@ -1,4 +1,6 @@
+import { UserRole } from "@backend/types";
 import { Logout } from "@mui/icons-material";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import PlaceIcon from "@mui/icons-material/Place";
 import SearchIcon from "@mui/icons-material/Search";
 import Settings from "@mui/icons-material/Settings";
@@ -16,7 +18,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 import * as React from "react";
-import { Link, createSearchParams, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo1 from "../assets/images/Logo1.png";
 import "../component.css/HeaderStyle.css";
 import { zIndex } from "../constants";
@@ -64,21 +66,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 function PrimarySearchAppBar() {
   const [query, setQuery] = React.useState("");
-  const [product, setProduct] = React.useState("");
-  // const handleSearch = (v) => {
-  //   setProduct(v.target.value);
-  //   setQuery(v.target.value)
-  // }
+
   const navigate = useNavigate();
   return (
     <Search
       component="form"
       onSubmit={(e) => {
         e.preventDefault();
-        navigate({
-          pathname: "/search",
-          search: createSearchParams({ q: query.trim() }).toString(),
-        });
+        navigate("/search", { state: { q: query.trim() } });
       }}
     >
       <SearchIconWrapper>
@@ -166,6 +161,7 @@ interface ProfileProps {
   anchorEl: HTMLElement | null;
   handleClose: () => void;
   logout: () => void;
+  role: UserRole;
 }
 
 function Profile({
@@ -174,6 +170,7 @@ function Profile({
   anchorEl,
   handleClose,
   logout,
+  role,
 }: ProfileProps): React.ReactNode {
   const navigate = useNavigate();
 
@@ -219,6 +216,19 @@ function Profile({
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
+        {role === UserRole.seller && (
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              navigate("/seller/dashboard");
+            }}
+          >
+            <ListItemIcon>
+              <DashboardIcon fontSize="small" />
+            </ListItemIcon>
+            Dashboard
+          </MenuItem>
+        )}
         <MenuItem
           onClick={() => {
             handleClose();
@@ -287,7 +297,7 @@ function LoginSignupButtons() {
 
 function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout, account } = useAuth();
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -319,8 +329,9 @@ function Navbar() {
           <PrimarySearchAppBar />
           {isLoggedIn ? (
             <>
-              <Cart />
+              {account?.user.role === UserRole.user && <Cart />}
               <Profile
+                role={(account ? account.user.role : UserRole.user) as UserRole}
                 {...{ handleClick, open, anchorEl, handleClose, logout }}
               />
             </>

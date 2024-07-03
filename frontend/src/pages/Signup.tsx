@@ -14,31 +14,12 @@ import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { API } from "../services";
 import { errorSnackbar, getErrorMessage, successSnackbar } from "../utils";
-
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -118,7 +99,6 @@ export default function Signup() {
                 id="email"
                 label="Email Address"
                 autoComplete="email"
-                autoFocus
                 {...register("email")}
               />
               <TextField
@@ -145,7 +125,7 @@ export default function Signup() {
                 margin="normal"
                 required
                 fullWidth
-                type="number"
+                type="text"
                 id="mobileNumber"
                 label="Mobile Number"
                 autoComplete="mobileNumber"
@@ -188,7 +168,6 @@ export default function Signup() {
               >
                 Sign Up
               </Button>
-              <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
         </Grid>

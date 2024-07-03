@@ -1,91 +1,35 @@
-import { Button, CardActionArea, CardActions, Grid } from "@mui/material";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import image1 from "../assets/images/image1.jpg";
-import image2 from "../assets/images/image2.jpg";
-import image3 from "../assets/images/image3.jpg";
+import { ProductResponse } from "@backend/controller/product";
+import Grid from "@mui/material/Unstable_Grid2/Grid2";
+import { useEffect, useState } from "react";
+import Product from "../components/Product";
+import { API } from "../services";
+import { errorSnackbar, getErrorMessage } from "../utils";
 
-const images = [image1, image2, image3];
+export default function Home() {
+  const [products, setProducts] = useState<ProductResponse["product"][]>([]);
 
-const Home: React.FC = () => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  useEffect(() => {
+    const asyncFn = async () => {
+      try {
+        const response = await API.getAllProducts();
+        setProducts(response.data.products);
+      } catch (error) {
+        errorSnackbar(getErrorMessage(error));
+      }
+    };
 
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    navigate("/api/user/dashboard");
-  };
+    asyncFn();
+  }, []);
 
   return (
-    <>
-      {/* Items are displayed according to the data from db */}
-
-      <Grid
-        container
-        rowSpacing={1}
-        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-        sx={{ pt: 3, pl: 3 }}
-      >
-        <Grid item>
-          <Card sx={{ width: 345 }}>
-            <CardActionArea
-              onClick={() => {
-                navigate("/product/:id");
-              }}
-            >
-              <CardMedia
-                component="img"
-                height="140"
-                //get the image data dynamically from db
-                image="../assets/images/image1.jpg"
-                alt="1st product"
-              />
-              <CardContent>
-                {/* get the data dynamically from db */}
-                <Typography gutterBottom variant="h5" component="div">
-                  Product 1
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Product 1 description / cost
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
-
-        <Grid item>
-          <Card sx={{ width: 345 }}>
-            <CardActionArea
-              onClick={() => {
-                navigate("/product/:id");
-              }}
-            >
-              <CardMedia
-                component="img"
-                height="140"
-                //get the image data dynamically from db
-                image="../assets/images/image1.jpg"
-                alt="1st product"
-              />
-              <CardContent>
-                {/* get the data dynamically from db */}
-                <Typography gutterBottom variant="h5" component="div">
-                  Product 1
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Product 1 description / cost
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
+    <Grid container rowSpacing={1} spacing={2} sx={{ m: 4 }}>
+      <Grid container spacing={2}>
+        {products.map((val) => (
+          <Grid key={val._id}>
+            <Product product={val} />
+          </Grid>
+        ))}
       </Grid>
-    </>
+    </Grid>
   );
-};
-
-export default Home;
+}

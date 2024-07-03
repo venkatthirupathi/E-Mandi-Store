@@ -1,3 +1,6 @@
+// https://github.com/vitejs/vite/issues/12423#issuecomment-2080351394
+import "@mui/material/styles/styled";
+//
 import { Box } from "@mui/material";
 import { SnackbarProvider } from "notistack";
 import { ReactNode } from "react";
@@ -14,6 +17,7 @@ import Cart from "./pages/Cart";
 import ErrorPage from "./pages/ErrorPage";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Product from "./pages/Product";
 import Profile from "./pages/Profile";
 import Search from "./pages/Search";
 import SellerDashboard from "./pages/SellerDashboard";
@@ -49,6 +53,9 @@ const router = createBrowserRouter([
     { path: "/profile", element: <Profile /> },
     { path: "/search", element: <Search /> },
     { path: "/cart", element: <Cart /> },
+    { path: "/product/:productId", element: <Product /> },
+    { path: "/product/new", element: <Product edit new /> },
+    { path: "/product/edit/:productId", element: <Product edit /> },
     { path: "/seller/dashboard", element: <SellerDashboard /> },
   ]),
   // add routes which do not need the layout (header and footer), below
