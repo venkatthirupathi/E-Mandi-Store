@@ -18,7 +18,7 @@ authRouter.post(
     const hashedPassword = bcrypt.hashSync(password, saltRounds);
     await userModel.create({
       ...userWithoutPassword,
-    password: hashedPassword,
+      password: hashedPassword,
     });
     res
       .status(HttpStatusCode.Created)
@@ -44,7 +44,7 @@ authRouter.post(
   asyncHandler(async (req, res: Response<LoginResponse>) => {
     const credentials = validators.loginUser.validateSync(req.body);
     const user = await userModel.findOne({ email: credentials.email });
-  if (!user || !bcrypt.compareSync(credentials.password, user.password)) {
+    if (!user || !bcrypt.compareSync(credentials.password, user.password)) {
       throw new ApiError(401, "Invalid credentials");
     }
 

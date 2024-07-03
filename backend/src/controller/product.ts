@@ -95,3 +95,17 @@ productRouter.delete(
     return res.status(HttpStatusCode.Ok).json({ message: "Product deleted" });
   })
 );
+
+/* Search products */
+productRouter.post(
+  "/search",
+  asyncHandler(async (req, res) => {
+    const body = validators.searchProduct.validateSync(req.body);
+    const searchQuery = body.q;
+    const products = await productModel
+      .find({ $text: { $search: searchQuery } })
+      .exec();
+
+    res.json({ products });
+  })
+);

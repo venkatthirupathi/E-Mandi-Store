@@ -7,6 +7,7 @@ import { Product, productModel } from "../model/ProductModel";
 import { userModel, validators } from "../model/UserModel";
 import { Overwrite, UserRole } from "../types";
 import { HttpStatusCode } from "../utils";
+import { ProductResponse } from "./product";
 
 export const cartRouter = Router();
 
@@ -59,7 +60,7 @@ cartRouter.post(
 );
 
 export interface CartGetAllResponse {
-  cart: Overwrite<CartItem, { product: Product }>[];
+  cart: Overwrite<CartItem, { product: ProductResponse["product"] }>[];
 }
 
 /* Get user's cart */

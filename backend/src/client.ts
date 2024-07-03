@@ -66,6 +66,12 @@ export class ApiClient {
       ApiClient.bearerToken(token)
     );
 
+  search = async (query: string) =>
+    await this.client.post<{ products: ProductResponse["product"][] }>(
+      "/product/search",
+      { q: query }
+    );
+
   /* --------------------------------- Cart --------------------------------- */
 
   addOneProductToCart = async (

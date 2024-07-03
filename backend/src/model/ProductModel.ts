@@ -41,6 +41,8 @@ const productModelSchema = new mongoose.Schema({
   })
 );
 
+productModelSchema.index({ productName: "text", description: "text" });
+
 export const productModel = mongoose.model("Product", productModelSchema);
 
 type ProductModelSchema = InferSchemaType<typeof productModelSchema>;
@@ -70,7 +72,14 @@ const patchProductValidator: ObjectSchema<
 
 export type PatchProductSchema = InferType<typeof patchProductValidator>;
 
+const searchProductValidator: ObjectSchema<{
+  q: string;
+}> = object({
+  q: string().required("Please enter a query"),
+});
+
 export const validators = {
   createProduct: createProductValidator,
   patchProduct: patchProductValidator,
+  searchProduct: searchProductValidator,
 };
